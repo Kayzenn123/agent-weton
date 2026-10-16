@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Weton — Kalkulator Weton & Primbon Harian</title>
+<meta name="description" content="Hitung weton kelahiranmu (hari + pasaran Jawa), neptu, watak, dan kecocokan menurut tradisi. Ditulis tangan oleh Juru Kunci RT 05.">
+<meta name="theme-color" content="#241a38">
+<link rel="canonical" href="https://kayzenn123.github.io/agent-weton/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Weton — Kalkulator Weton & Primbon Harian">
+<meta property="og:description" content="Monggo, wetonmu apa? Hitung hari + pasaran Jawa, neptu, dan kecocokan menurut tradisi.">
+<meta property="og:image" content="https://kayzenn123.github.io/agent-weton/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preload" href="fonts/smooch-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/ar-one-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#meja">Lompat ke meja kartu</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="wobble">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" result="n" seed="7"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="4"/>
+    </filter>
+    <filter id="wobble-sm">
+      <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" result="n" seed="3"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2"/>
+    </filter>
+  </defs>
+</svg>
+
+<div class="marquee-side left" aria-hidden="true">
+  <div class="marquee-track" id="mq-left"></div>
+</div>
+<div class="marquee-side right" aria-hidden="true">
+  <div class="marquee-track reverse" id="mq-right"></div>
+</div>
+
+<header class="topbar">
+  <p class="brand" aria-label="Weton oleh Juru Kunci">
+    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H4z M4 9h16 M8 5v11 M16 5v11" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+    <span>weton <em>· rt 05</em></span>
+  </p>
+  <div class="topbar-actions">
+    <button id="btn-motion" class="chip" type="button" aria-pressed="true">Gerak: nyala</button>
+    <button id="btn-marquee" class="chip" type="button" aria-pressed="true">Teks berjalan: nyala</button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="hero" aria-labelledby="judul">
+    <p class="kicker">papan pengumuman · edisi malam hari</p>
+    <h1 id="judul" class="mega" aria-label="Weton">WETON</h1>
+    <p class="sub" id="hero-sub">kalkulator weton &amp; primbon harian — ditulis tangan oleh juru kunci</p>
+    <p class="hero-note">Monggo, wetonmu apa? Geser kartu di bawah atau langsung hitung tanggal lahirmu.</p>
+    <a class="btn magnetic" href="#meja" data-target="0">Hitung wetonku</a>
+    <p class="today" id="today-line" aria-live="polite"></p>
+  </section>
+
+  <div class="band" aria-hidden="true">
+    <div class="band-track" id="band-1"></div>
+  </div>
+
+  <section class="meja-wrap" id="meja" aria-labelledby="meja-judul" tabindex="-1">
+    <h2 id="meja-judul" class="section-title">Meja Juru Kunci</h2>
+    <p class="meja-hint">Flick kartunya seperti memilih karcis di loket — atau pakai tombol &amp; panah keyboard.</p>
+
+    <div class="deck-nav">
+      <button id="deck-prev" class="btn small" type="button" aria-label="Kartu sebelumnya">←</button>
+      <div class="dots" role="tablist" aria-label="Pilih kartu" id="dots"></div>
+      <button id="deck-next" class="btn small" type="button" aria-label="Kartu berikutnya">→</button>
+    </div>
+
+    <div class="deck" id="deck">
+      <div class="track" id="track">
+
+        <article class="card" data-card="0" aria-labelledby="c0-judul">
+          <header class="card-head">
+            <span class="card-no">no. 01</span>
+            <h3 id="c0-judul">Kalkulator Weton</h3>
+            <p class="hand">isi tanggal lahirmu, biar tak hitungkan</p>
+          </header>
+          <form id="form-weton" novalidate>
+            <label for="in-tgl">Tanggal lahir</label>
+            <input type="date" id="in-tgl" name="tgl" min="1900-01-01" max="2100-12-31" required>
+            <p class="error" id="err-tgl" role="alert" hidden></p>
+            <div class="row">
+              <button class="btn magnetic" type="submit">Hitung!</button>
+              <button class="btn ghost" type="button" id="btn-share">Salin link</button>
+            </div>
+          </form>
+          <div class="result" id="res-weton" aria-live="polite"></div>
+        </article>
+
+        <article class="card" data-card="1" aria-labelledby="c1-judul">
+          <header class="card-head">
+            <span class="card-no">no. 02</span>
+            <h3 id="c1-judul">Cocokkan Dua Weton</h3>
+            <p class="hand">buat yang mau ngecek kecocokan — kata orang tua dulu</p>
+          </header>
+          <form id="form-cocok" novalidate>
+            <div class="grid2">
+              <div>
+                <label for="in-a">Tanggal pertama</label>
+                <input type="date" id="in-a" name="a" min="1900-01-01" max="2100-12-31" required>
+              </div>
+              <div>
+                <label for="in-b">Tanggal kedua</label>
+                <input type="date" id="in-b" name="b" min="1900-01-01" max="2100-12-31" required>
+              </div>
+            </div>
+            <p class="error" id="err-cocok" role="alert" hidden></p>
+            <div class="row">
+              <button class="btn magnetic" type="submit">Cocokkan!</button>
+              <button class="btn ghost" type="button" id="btn-share2">Salin link</button>
+            </div>
+          </form>
+          <div class="result" id="res-cocok" aria-live="polite"></div>
+          <p class="disclaimer">Ramalan di atas adalah kepercayaan rakyat turun-temurun, bukan fakta ilmiah. Jangan dipakai buat mutusin hal serius ya.</p>
+        </article>
+
+        <article class="card" data-card="2" aria-labelledby="c2-judul">
+          <header class="card-head">
+            <span class="card-no">no. 03</span>
+            <h3 id="c2-judul">Kalender 30 Hari</h3>
+            <p class="hand">pasaran tiap hari, sebulan ke depan — klik tanggal buat ngitung</p>
+          </header>
+          <div class="cal" id="cal" role="list" aria-label="Kalender pasaran 30 hari ke depan"></div>
+          <p class="legend"><span class="star">★</span> = malam istimewa (Jumat/Selasa Kliwon) menurut tradisi</p>
+        </article>
+
+        <article class="card" data-card="3" aria-labelledby="c3-judul">
+          <header class="card-head">
+            <span class="card-no">no. 04</span>
+            <h3 id="c3-judul">Lima Pasaran</h3>
+            <p class="hand">kenalan dulu sama lima penghuni kalender jawa</p>
+          </header>
+          <ul class="pasaran-list" id="pasaran-list"></ul>
+          <p class="disclaimer">Watak di atas versi cerita orang tua-tua. Anggap hiburan, bukan vonis.</p>
+        </article>
+
+      </div>
+    </div>
+    <p class="deck-status" id="deck-status" aria-live="polite"></p>
+  </section>
+
+  <section class="cara" aria-labelledby="cara-judul">
+    <h2 id="cara-judul" class="section-title">Cara ngitungnya, biar percaya</h2>
+    <ol class="steps">
+      <li><strong>Patokan:</strong> 1 Suro 1555 (8 Juli 1633) itu <strong>Jumat Legi</strong> — awal kalender Jawa.</li>
+      <li><strong>Pasaran:</strong> hitung selisih hari dari patokan, sisa bagi 5 → Legi, Pahing, Pon, Wage, Kliwon.</li>
+      <li><strong>Neptu:</strong> neptu hari (Minggu 5, Senin 4, Selasa 3, Rabu 7, Kamis 8, Jumat 6, Sabtu 9) + neptu pasaran (Legi 5, Pahing 9, Pon 7, Wage 4, Kliwon 8).</li>
+      <li><strong>Bukti:</strong> 17 Agustus 1945 jatuh pada <strong>Jumat Legi</strong> — cocok dengan catatan sejarah.</li>
+    </ol>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="pin" aria-hidden="true"></div>
+  <h2 class="section-title">Papan Pengumuman</h2>
+  <p>Ditempel dengan kapur oleh <strong>Juru Kunci RT 05</strong>.</p>
+  <p class="foot-note">Perhitungan weton memakai patokan kalender Jawa yang terdokumentasi. Watak &amp; ramalan adalah tradisi rakyat — dinikmati, jangan ditelan mentah-mentah.</p>
+  <p class="foot-note">Hari 7 · 30 Days of Code · <a href="https://github.com/Kayzenn123/agent-weton">kode sumber</a></p>
+</footer>
+
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<script src="vendor/gsap.min.js" defer></script>
+<script src="vendor/ScrollTrigger.min.js" defer></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
